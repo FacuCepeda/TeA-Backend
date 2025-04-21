@@ -1,12 +1,10 @@
-// controllers/amazonController.js
+const productos = require('../data/productosAmazonSimulados');
 
-const productosAmazonSimulados = require('../data/productosAmazonSimulados');
-
-const buscarAmazon = async (query) => {
-    const q = query.toLowerCase();
-    return productosAmazonSimulados.filter(producto =>
-        producto.title.toLowerCase().includes(q)
+async function buscarAmazon(query) {
+    const resultados = productos.filter((producto) =>
+        producto.title.toLowerCase().includes(query.toLowerCase())
     );
-};
+    return resultados;
+}
 
 module.exports = { buscarAmazon };

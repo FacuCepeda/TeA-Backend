@@ -1,19 +1,26 @@
-// data/productosAmazonSimulados.js
 module.exports = [
   {
-      id: "amz1",
-      title: "Mouse inalámbrico Logitech M185",
-      price: 5499,
+      id: "amz-001",
+      title: "Auriculares Bluetooth Inalámbricos",
+      price: 8999,
       currency: "ARS",
-      thumbnail: "https://example.com/mouse.jpg",
-      permalink: "https://amazon.com/producto/mouse-logitech-m185"
+      thumbnail: "https://via.placeholder.com/150",
+      permalink: "https://www.amazon.com/dp/B0XXXXXX"
   },
   {
-      id: "amz2",
-      title: "Teclado mecánico Redragon K552",
-      price: 15999,
+      id: "amz-002",
+      title: "Smartwatch Deportivo con Monitor de Ritmo",
+      price: 15499,
       currency: "ARS",
-      thumbnail: "https://example.com/teclado.jpg",
-      permalink: "https://amazon.com/producto/redragon-k552"
+      thumbnail: "https://via.placeholder.com/150",
+      permalink: "https://www.amazon.com/dp/B0XXXXXX"
+  },
+  {
+      id: "amz-003",
+      title: "Cargador Rápido USB-C",
+      price: 4999,
+      currency: "ARS",
+      thumbnail: "https://via.placeholder.com/150",
+      permalink: "https://www.amazon.com/dp/B0XXXXXX"
   }
 ];
