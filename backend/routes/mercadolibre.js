@@ -1,4 +1,3 @@
-// routes/mercadolibre.js
 const express = require('express');
 const axios = require('axios');
 const crypto = require('crypto');
@@ -11,28 +10,20 @@ let temporaryState = null;
 let codeVerifier = null;
 let accessToken = null;
 
-// 🔐 Generar code_verifier y su hash code_challenge
+// 🔐 Generar PKCE
 function generatePKCE() {
     codeVerifier = crypto.randomBytes(32).toString('hex');
     const hash = crypto.createHash('sha256').update(codeVerifier).digest();
     const codeChallenge = hash.toString('base64')
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=+$/, '');
+        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     return { codeVerifier, codeChallenge };
 }
 
-// 🎲 Generador de state seguro
 function generateState() {
     return crypto.randomBytes(16).toString('hex');
 }
 
-// ✅ Ruta de test
-router.get('/test', (req, res) => {
-    res.json({ message: '🟢 MercadoLibre funcionando correctamente' });
-});
-
-// 🔗 Paso 1: Redirigir a ML con PKCE
+// 🔗 Paso 1: Login
 router.get('/login', (req, res) => {
     const state = generateState();
     temporaryState = state;
@@ -43,7 +34,7 @@ router.get('/login', (req, res) => {
     res.redirect(authUrl);
 });
 
-// 🔁 Paso 2: Callback y obtener access_token
+// 🔁 Paso 2: Callback
 router.get('/callback', async (req, res) => {
     const { code, state } = req.query;
 
@@ -71,12 +62,12 @@ router.get('/callback', async (req, res) => {
         console.log('✅ ACCESS TOKEN:', accessToken);
         res.send('✅ Autenticación con MercadoLibre completada con éxito.');
     } catch (error) {
-        console.error('❌ Error al obtener el token:', error.response?.data || error.message);
+        console.error('❌ Error al obtener token:', error.response?.data || error.message);
         res.status(500).json({ error: 'Error al obtener token de MercadoLibre' });
     }
 });
 
-// 🔎 Buscar productos en MercadoLibre
+// 🔎 Buscar productos
 router.get('/buscar', async (req, res) => {
     const { q } = req.query;
 
@@ -84,11 +75,12 @@ router.get('/buscar', async (req, res) => {
     if (!accessToken) return res.status(401).json({ error: 'No autenticado con MercadoLibre' });
 
     try {
-        const response = await axios.get(`https://api.mercadolibre.com/sites/MLA/search?q=${encodeURIComponent(q)}`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+        const response = await axios.get(
+            `https://api.mercadolibre.com/sites/MLA/search?q=${encodeURIComponent(q)}`,
+            {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            }
+        );
 
         const resultados = response.data.results.map((item) => ({
             id: item.id,
@@ -106,7 +98,7 @@ router.get('/buscar', async (req, res) => {
     }
 });
 
-// 👤 Crear usuario de prueba
+// 👤 Crear test user
 router.post('/crear-test-user', async (req, res) => {
     if (!accessToken) return res.status(401).json({ error: 'No autenticado con MercadoLibre' });
 
