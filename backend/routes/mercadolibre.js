@@ -27,6 +27,11 @@ function generateState() {
     return crypto.randomBytes(16).toString('hex');
 }
 
+// ✅ Ruta de test
+router.get('/test', (req, res) => {
+    res.json({ message: '🟢 MercadoLibre funcionando correctamente' });
+});
+
 // 🔗 Paso 1: Redirigir a ML con PKCE
 router.get('/login', (req, res) => {
     const state = generateState();
