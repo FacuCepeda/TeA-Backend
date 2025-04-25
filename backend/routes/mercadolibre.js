@@ -74,6 +74,9 @@ router.get('/buscar', async (req, res) => {
     if (!q) return res.status(400).json({ error: 'Falta el parámetro "q"' });
     if (!accessToken) return res.status(401).json({ error: 'No autenticado con MercadoLibre' });
 
+    // 👉 Mostrar el token actual
+    console.log('🔑 TOKEN ACTUAL:', accessToken);
+
     try {
         const response = await axios.get(
             `https://api.mercadolibre.com/sites/MLA/search?q=${encodeURIComponent(q)}`,
@@ -97,6 +100,7 @@ router.get('/buscar', async (req, res) => {
         res.status(500).json({ error: 'Error al buscar en MercadoLibre' });
     }
 });
+
 
 // 👤 Crear test user
 router.post('/crear-test-user', async (req, res) => {
